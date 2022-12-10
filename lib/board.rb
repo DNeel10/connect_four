@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'cell'
-
 class Board
   attr_accessor :grid
 
