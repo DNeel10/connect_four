@@ -29,5 +29,55 @@ describe Game do
     # be tested.
   end
 
+  describe '#turn_loop' do
+    context 'when no winner has been found' do
+      subject(:game_loop) { described_class.new }
 
+      before do
+        allow(game_loop).to receive(:game_won?).and_return(false)
+      end
+
+      it 'sends player_turn to player_one' do
+        player_one = game_loop.instance_variable_get(:@red_player)
+        game_board = game_loop.instance_variable_get(:@board)
+        expect(player_one).to receive(:player_turn).with(game_board)
+        game_loop.turn_loop
+      end
+
+      it 'sends player_turn to player_two' do
+        player_two = game_loop.instance_variable_get(:@black_player)
+        game_board = game_loop.instance_variable_get(:@board)
+        expect(player_two).to receive(:player_turn).with(game_board)
+        game_loop.turn_loop
+      end
+    end
+
+    context 'when a winner has been found BEFORE player one makes a move' do
+      subject(:game_loop) { described_class.new }
+
+      before do
+        allow(game_loop).to receive(:game_won?).and_return(true)
+      end
+
+      it 'stops the loop before player one receives his turn' do
+        player_one = game_loop.instance_variable_get(:@red_player)
+        expect(player_one).not_to receive(:player_turn)
+        game_loop.turn_loop
+      end
+    end
+
+    context 'when a winner has been found AFTER player one makes a move' do
+      subject(:game_loop) { described_class.new }
+
+      before do
+        allow(game_loop).to receive(:game_won?).and_return(false, true)
+      end
+
+      it 'stops the loop before player two receives his turn' do
+        player_two = game_loop.instance_variable_get(:@black_player)
+        expect(player_two).not_to receive(:player_turn)
+        game_loop.turn_loop
+      end
+    end
+  end
 end

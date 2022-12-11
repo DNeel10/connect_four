@@ -8,7 +8,7 @@ class Player
   end
 
   def player_turn(board)
-    user_input = gets.chomp
+    user_input = gets.chomp.to_i
     board.drop_marker(user_input, color)
   end
 end

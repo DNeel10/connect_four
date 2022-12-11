@@ -5,7 +5,7 @@ require './lib/board'
 
 describe Player do
   subject(:player_drop) { Player.new('Black') }
-  let(:board) { double('board') }
+  let(:board) { instance_double(Board) }
 
   describe '#player_turn' do
     before do
