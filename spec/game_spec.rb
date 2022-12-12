@@ -3,6 +3,7 @@
 require './lib/game'
 require './lib/player'
 require './lib/board'
+require './lib/win_checker'
 
 describe Game do
   describe '#initialize' do
@@ -78,6 +79,18 @@ describe Game do
         expect(player_two).not_to receive(:player_turn)
         game_loop.turn_loop
       end
+    end
+  end
+
+  describe '#game_won?' do
+    subject(:game_over) {described_class.new }
+    let(:win_checker) { instance_double(WinChecker) }
+
+    it 'sends check wins to the winchecker' do
+      win = game_over.instance_variable_get(:@win_checker)
+      game_board = game_over.instance_variable_get(:@board)
+      expect(win).to receive(:check_wins).with(game_board).once
+      game_over.game_won?
     end
   end
 end

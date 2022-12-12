@@ -4,7 +4,7 @@ class Board
   attr_accessor :grid
 
   def initialize
-    @grid = Array.new(6) { Array.new(7, nil) }
+    @grid = Array.new(7) { Array.new(6, nil) }
   end
 
   def drop_marker(column, color)
