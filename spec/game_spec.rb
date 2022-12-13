@@ -41,6 +41,7 @@ describe Game do
       it 'sends player_turn to player_one' do
         player_one = game_loop.instance_variable_get(:@red_player)
         game_board = game_loop.instance_variable_get(:@board)
+        allow(player_one).to receive(:gets).with(4)
         expect(player_one).to receive(:player_turn).with(game_board)
         game_loop.turn_loop
       end
@@ -48,6 +49,7 @@ describe Game do
       it 'sends player_turn to player_two' do
         player_two = game_loop.instance_variable_get(:@black_player)
         game_board = game_loop.instance_variable_get(:@board)
+        allow(player_two).to receive(:gets).with(4)
         expect(player_two).to receive(:player_turn).with(game_board)
         game_loop.turn_loop
       end
