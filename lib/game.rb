@@ -32,9 +32,3 @@ class Game
     win_checker.check_wins(board)
   end
 end
-
-game = Game.new
-game.turn_loop
-game.turn_loop
-game.turn_loop
-game.turn_loop

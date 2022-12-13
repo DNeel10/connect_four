@@ -34,6 +34,61 @@ class WinChecker
   end
 
   def check_diagonal_wins(board)
+    return check_up_right(board)
+    return check_down_right(board)
+    return check_up_left(board)
+    return check_down_left(board)
   end
 
+  def check_up_right(board)
+    board.grid.each_with_index do |col, cindex|
+      col.each_with_index do |row, rindex|
+        next if row.nil?
+        next if cindex > 3 || rindex > 2
+        return true if board.grid[cindex][rindex] == board.grid[cindex + 1][rindex + 1] &&
+                       board.grid[cindex][rindex] == board.grid[cindex + 2][rindex + 2] &&
+                       board.grid[cindex][rindex] == board.grid[cindex + 3][rindex + 3]
+      end
+    end
+    false
+  end
+
+  def check_down_right(board)
+    board.grid.each_with_index do |col, cindex|
+      col.each_with_index do |row, rindex|
+        next if row.nil?
+        next if cindex > 3 || rindex < 3
+        return true if board.grid[cindex][rindex] == board.grid[cindex + 1][rindex - 1] &&
+                       board.grid[cindex][rindex] == board.grid[cindex + 2][rindex - 2] &&
+                       board.grid[cindex][rindex] == board.grid[cindex + 3][rindex - 3]
+      end
+    end
+    false
+  end
+
+  def check_up_left(board)
+    board.grid.each_with_index do |col, cindex|
+      col.each_with_index do |row, rindex|
+        next if row.nil?
+        next if cindex < 3 || rindex > 2
+        return true if board.grid[cindex][rindex] == board.grid[cindex - 1][rindex + 1] &&
+                       board.grid[cindex][rindex] == board.grid[cindex - 2][rindex + 2] &&
+                       board.grid[cindex][rindex] == board.grid[cindex - 3][rindex + 3]
+      end
+    end
+    false
+  end 
+
+  def check_down_left(board)
+    board.grid.each_with_index do |col, cindex|
+      col.each_with_index do |row, rindex|
+        next if row.nil?
+        next if cindex < 3 || rindex < 3
+        return true if board.grid[cindex][rindex] == board.grid[cindex - 1][rindex - 1] &&
+                       board.grid[cindex][rindex] == board.grid[cindex - 2][rindex - 2] &&
+                       board.grid[cindex][rindex] == board.grid[cindex - 3][rindex - 3]
+      end
+    end
+    false
+  end 
 end

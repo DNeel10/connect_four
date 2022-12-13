@@ -45,6 +45,9 @@ describe WinChecker do
         board.grid[1] = ['black', nil, nil, nil, nil, nil, nil]
         board.grid[2] = ['black', nil, nil, nil, nil, nil, nil]
         board.grid[3] = ['black', nil, nil, nil, nil, nil, nil]
+        board.grid[4] = [nil, nil, nil, nil, nil, nil]
+        board.grid[5] = [nil, nil, nil, nil, nil, nil]
+        board.grid[6] = [nil, nil, nil, nil, nil, nil]
       end
 
       it 'returns true' do
@@ -61,6 +64,9 @@ describe WinChecker do
         board.grid[1] = [nil, nil, nil, nil, nil, nil, 'black']
         board.grid[2] = [nil, nil, nil, nil, nil, nil, 'black']
         board.grid[3] = [nil, nil, nil, nil, nil, nil, 'black']
+        board.grid[4] = [nil, nil, nil, nil, nil, nil]
+        board.grid[5] = [nil, nil, nil, nil, nil, nil]
+        board.grid[6] = [nil, nil, nil, nil, nil, nil]
       end
 
       it 'returns true' do
@@ -96,6 +102,9 @@ describe WinChecker do
         board.grid[1] = ['red', nil, nil, nil, nil, nil, nil]
         board.grid[2] = ['black', nil, nil, nil, nil, nil, nil]
         board.grid[3] = ['black', nil, nil, nil, nil, nil, nil]
+        board.grid[4] = [nil, nil, nil, nil, nil, nil]
+        board.grid[5] = [nil, nil, nil, nil, nil, nil]
+        board.grid[6] = [nil, nil, nil, nil, nil, nil]
       end
 
       it 'returns false' do
@@ -108,9 +117,35 @@ describe WinChecker do
     subject(:win_diagonal) { described_class.new }
     let(:board) { instance_double(Board, :grid => Array.new(7) { Array.new(6, nil) }) }
 
-    context 'player has 4 markers in a diagonal pattern' do
+    context 'player has 4 markers in a row from bottom left, moving up and right' do
+      before do
+        board.grid[0] = ['red', nil, nil, nil, nil, nil]
+        board.grid[1] = ['black', 'red', nil, nil, nil, nil]
+        board.grid[2] = [nil, 'black', 'red', nil, nil, nil]
+        board.grid[3] = [nil, nil, 'black', nil, nil, nil]
+        board.grid[4] = [nil, nil, nil, 'black', nil, nil]
+        board.grid[5] = [nil, nil, nil, nil, nil, nil]
+        board.grid[6] = [nil, nil, nil, nil, nil, nil]
+      end
+
       it 'returns true' do
         expect(win_diagonal.check_diagonal_wins(board)).to eq true
+      end
+    end
+
+    context 'player has 3 markers in a row from column 5, moving up and right' do
+      before do
+        board.grid[0] = [nil, nil, nil, nil, nil, nil]
+        board.grid[1] = [nil, nil, nil, nil, nil, nil]
+        board.grid[2] = [nil, nil, nil, nil, nil, nil]
+        board.grid[3] = [nil, nil, nil, nil, nil, nil]
+        board.grid[4] = [nil, nil, nil, 'black', nil, nil]
+        board.grid[5] = [nil, nil, nil, nil, 'black', nil]
+        board.grid[6] = [nil, nil, nil, nil, nil, 'black']
+      end
+
+      it 'returns false' do
+        expect(win_diagonal.check_diagonal_wins(board)).to eq false
       end
     end
   end
