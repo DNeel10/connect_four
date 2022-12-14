@@ -10,7 +10,7 @@ class Player
   end
 
   def player_turn(board)
-    puts 'Please input a column to drop your marker'
+    puts "#{color} player, please input a column to drop your marker"
 
     user_input = gets.chomp.to_i
     board.drop_marker(user_input, color)

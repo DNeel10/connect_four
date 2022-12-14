@@ -25,11 +25,6 @@ describe Game do
     end
   end
 
-  describe '#play_game' do
-    # Public Script Method -> No test necessary, but all methods inside should
-    # be tested.
-  end
-
   describe '#turn_loop' do
     context 'when no winner has been found' do
       subject(:game_loop) { described_class.new }
@@ -41,7 +36,7 @@ describe Game do
       it 'sends player_turn to player_one' do
         player_one = game_loop.instance_variable_get(:@red_player)
         game_board = game_loop.instance_variable_get(:@board)
-        allow(player_one).to receive(:gets).with(4)
+        allow(player_one).to receive(:gets).and_return(4)
         expect(player_one).to receive(:player_turn).with(game_board)
         game_loop.turn_loop
       end
@@ -49,31 +44,31 @@ describe Game do
       it 'sends player_turn to player_two' do
         player_two = game_loop.instance_variable_get(:@black_player)
         game_board = game_loop.instance_variable_get(:@board)
-        allow(player_two).to receive(:gets).with(4)
+        allow(player_two).to receive(:gets).and_return(4)
         expect(player_two).to receive(:player_turn).with(game_board)
         game_loop.turn_loop
       end
     end
 
-    context 'when a winner has been found BEFORE player one makes a move' do
-      subject(:game_loop) { described_class.new }
-
-      before do
-        allow(game_loop).to receive(:game_won?).and_return(true)
-      end
-
-      it 'stops the loop before player one receives his turn' do
-        player_one = game_loop.instance_variable_get(:@red_player)
-        expect(player_one).not_to receive(:player_turn)
-        game_loop.turn_loop
-      end
-    end
-
-    context 'when a winner has been found AFTER player one makes a move' do
+    context 'when a winner has been found after player two makes a move' do
       subject(:game_loop) { described_class.new }
 
       before do
         allow(game_loop).to receive(:game_won?).and_return(false, true)
+      end
+
+      it 'stops the loop before player one receives his turn' do
+        player_two = game_loop.instance_variable_get(:@black_player)
+        expect(game_loop).to receive(:game_won?).and_return(player_two)
+        game_loop.turn_loop
+      end
+    end
+
+    context 'when a winner has been found after player one makes a move' do
+      subject(:game_loop) { described_class.new }
+
+      before do
+        allow(game_loop).to receive(:game_won?).and_return(true)
       end
 
       it 'stops the loop before player two receives his turn' do
@@ -85,7 +80,7 @@ describe Game do
   end
 
   describe '#game_won?' do
-    subject(:game_over) {described_class.new }
+    subject(:game_over) { described_class.new }
     let(:win_checker) { instance_double(WinChecker) }
 
     it 'sends check wins to the winchecker' do
