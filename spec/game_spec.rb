@@ -6,75 +6,60 @@ require './lib/board'
 require './lib/win_checker'
 
 describe Game do
-  describe '#initialize' do
-    subject(:new_game) { described_class.new }
-
-    it 'creates a player with a red marker' do
-      red_player = new_game.instance_variable_get(:@red_player)
-      expect(red_player.color).to eq('Red')
-    end
-
-    it 'creates a player with a black marker' do
-      black_player = new_game.instance_variable_get(:@black_player)
-      expect(black_player.color).to eq('Black')
-    end
-
-    it 'creates an array object for the board' do
-      board = new_game.instance_variable_get(:@board)
-      expect(board.grid).to be_an_instance_of(Array)
-    end
-  end
-
   describe '#turn_loop' do
-    context 'when no winner has been found' do
-      subject(:game_loop) { described_class.new }
+    context 'the game is ongoing' do
+      subject(:game_turn) { described_class.new }
+      let(:player) { instance_double(Player, color: 'R') }
 
       before do
-        allow(game_loop).to receive(:game_won?).and_return(false)
+        allow(game_turn).to receive(:puts)
       end
 
-      it 'sends player_turn to player_one' do
-        player_one = game_loop.instance_variable_get(:@red_player)
-        game_board = game_loop.instance_variable_get(:@board)
-        allow(player_one).to receive(:gets).and_return(4)
-        expect(player_one).to receive(:player_turn).with(game_board)
-        game_loop.turn_loop
-      end
-
-      it 'sends player_turn to player_two' do
-        player_two = game_loop.instance_variable_get(:@black_player)
-        game_board = game_loop.instance_variable_get(:@board)
-        allow(player_two).to receive(:gets).and_return(4)
-        expect(player_two).to receive(:player_turn).with(game_board)
-        game_loop.turn_loop
+      it 'sends player_turn to the each player' do
+        board = game_turn.instance_variable_get(:@board)
+        players = game_turn.instance_variable_get(:@players)
+        players.each do |player|
+          expect(player).to receive(:player_turn).with(board)
+        end
+        game_turn.turn_loop(board)
       end
     end
 
-    context 'when a winner has been found after player two makes a move' do
-      subject(:game_loop) { described_class.new }
+    context 'the game is won by the first player' do
+      subject(:game_winner) { described_class.new }
 
       before do
-        allow(game_loop).to receive(:game_won?).and_return(false, true)
+        allow(game_winner).to receive(:puts)
+        players = game_winner.instance_variable_get(:@players)
+        players.each do |player|
+          allow(player).to receive(:player_turn)
+        end
+        allow(game_winner).to receive(:game_won?).and_return(true)
       end
 
-      it 'stops the loop before player one receives his turn' do
-        player_two = game_loop.instance_variable_get(:@black_player)
-        expect(game_loop).to receive(:game_won?).and_return(player_two)
-        game_loop.turn_loop
+      it 'returns the winner if the game is won by the first player' do
+        players = game_winner.instance_variable_get(:@players)
+        player = players[0]
+        expect { game_winner.turn_loop }.to change { game_winner.instance_variable_get(:@winner) }.to(player)
       end
     end
 
-    context 'when a winner has been found after player one makes a move' do
-      subject(:game_loop) { described_class.new }
+    context 'the game is won by the second player' do
+      subject(:game_winner) { described_class.new }
 
       before do
-        allow(game_loop).to receive(:game_won?).and_return(true)
+        allow(game_winner).to receive(:puts)
+        players = game_winner.instance_variable_get(:@players)
+        players.each do |player|
+          allow(player).to receive(:player_turn)
+        end
+        allow(game_winner).to receive(:game_won?).and_return(false, true)
       end
 
-      it 'stops the loop before player two receives his turn' do
-        player_two = game_loop.instance_variable_get(:@black_player)
-        expect(player_two).not_to receive(:player_turn)
-        game_loop.turn_loop
+      it 'returns the winner if the game is won by the first player' do
+        players = game_winner.instance_variable_get(:@players)
+        player = players[1]
+        expect { game_winner.turn_loop }.to change { game_winner.instance_variable_get(:@winner) }.to(player)
       end
     end
   end

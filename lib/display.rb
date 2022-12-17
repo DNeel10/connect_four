@@ -8,7 +8,7 @@ module Display
   def introduction
     <<-HEREDOC
     Welcome to Connect 4!
-    
+
     Rules:
     1. Players will alternate turns dropping markers into the 7 x 6 board
       - Markers will always fall to the lowest open spot in the selected column.

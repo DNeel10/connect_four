@@ -8,9 +8,7 @@ class Board
   end
 
   def drop_marker(column, color)
-    return make_valid_move(column, color) unless full?(column)
-
-    puts 'This column is full, please select another column'
+    return make_valid_move(column, color) if open_space?(column)
   end
 
   def make_valid_move(column, color, grid = @grid)
@@ -23,7 +21,7 @@ class Board
     grid
   end
 
-  def full?(column, grid = @grid)
-    grid[column].none?(&:nil?)
+  def open_space?(column, grid = @grid)
+    grid[column]&.any?(&:nil?)
   end
 end

@@ -19,7 +19,7 @@ class WinChecker
         return true if first == second && first == third && first == fourth 
       end
     end
-    false          
+    false
   end
 
   def check_horizontal_wins(board)
@@ -28,18 +28,23 @@ class WinChecker
         next if row.nil?
         next if cindex > 3
         return true if row == board.grid[cindex + 1][rindex] &&
-          row == board.grid[cindex + 2][rindex] &&
-          row == board.grid[cindex + 3][rindex]
+                       row == board.grid[cindex + 2][rindex] &&
+                       row == board.grid[cindex + 3][rindex]
       end
     end
     false
   end
 
   def check_diagonal_wins(board)
-    return check_up_right(board)
-    return check_down_right(board)
-    return check_up_left(board)
-    return check_down_left(board)
+    return check_up_right(board) if check_up_right(board)
+
+    return check_down_right(board) if check_down_right(board)
+
+    return check_up_left(board) if check_up_left(board)
+
+    return check_down_left(board) if check_down_left(board)
+
+    false
   end
 
   def check_up_right(board)

@@ -7,12 +7,10 @@ require_relative 'display'
 
 class Game
   include Display
-  attr_reader :players, :red_player, :black_player, :board, :win_checker
+  attr_reader :players, :board, :win_checker, :winner
 
-  def initialize(red_player = Player.new('R'), black_player = Player.new('B'))
-    @red_player = red_player
-    @black_player = black_player
-    @players = [red_player, black_player]
+  def initialize
+    @players = [Player.new('R'), Player.new('B')]
     @board = Board.new
     @win_checker = WinChecker.new
     @winner = nil
@@ -27,6 +25,8 @@ class Game
 
   def turn_loop(board = @board)
     players.each do |player|
+      puts "#{player.color} player, please input a column to drop your marker"
+
       player.player_turn(board)
       display_game_board
       return @winner = player if game_won?
@@ -37,6 +37,3 @@ class Game
     win_checker.check_wins(board)
   end
 end
-
-game = Game.new
-game.play_game
