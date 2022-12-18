@@ -4,13 +4,18 @@ require_relative 'player'
 require_relative 'board'
 require_relative 'win_checker'
 require_relative 'display'
+require_relative 'colorable_string'
 
 class Game
+  using ColorableString
   include Display
+
   attr_reader :players, :board, :win_checker, :winner
 
+  MARKER = "\u23FA"
+
   def initialize
-    @players = [Player.new('R'), Player.new('B')]
+    @players = [Player.new(MARKER.encode('utf-8').fg_color(:red)), Player.new(MARKER.encode.fg_color(:black))]
     @board = Board.new
     @win_checker = WinChecker.new
     @winner = nil

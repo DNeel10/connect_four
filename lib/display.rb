@@ -21,7 +21,7 @@ module Display
   end
 
   def display_game_board(board = @board.grid)
-    grid = board.flatten.map { |val| val.nil? ? " " : val }
+    grid = board.flatten.map { |val| val.nil? ? ' ' : val }
 
     puts ''
     puts '|  1  |  2  |  3  |  4  |  5  |  6  |  7  |'
