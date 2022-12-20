@@ -12,6 +12,10 @@ class WinChecker
     return true if check_diagonal_wins(board)
   end
 
+  def check_ties(board)
+    return true if board.full?
+  end
+
   def check_vertical_wins(board)
     board.grid.each do |col|
       col.each_cons(4) do |first, second, third, fourth|

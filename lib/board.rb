@@ -24,4 +24,11 @@ class Board
   def open_space?(column, grid = @grid)
     grid[column]&.any?(&:nil?)
   end
+
+  def full?
+    @grid.each do |column| 
+      return false if column.any?(nil)
+    end
+    true
+  end
 end

@@ -5,6 +5,10 @@ module Display
     puts "Congratulations #{winner.color} player! You have won!"
   end
 
+  def display_tie_message
+    puts 'The game is a tie! play again?'
+  end
+
   def introduction
     <<-HEREDOC
     Welcome to Connect 4!
